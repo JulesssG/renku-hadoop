@@ -1,0 +1,11 @@
+Follow this tutorial: https://godatadriven.com/blog/kerberos-basics-and-installing-a-kdc/
+
+Additional notes:
+- The syntax `yum install krb5-libs krb5-server krb5-workstation` did not work in my version of CentOS, install the three packages in three separated commands
+- For the realm name, from what I read I assumed I should use the name server of the domain of the host (hadoop-1.datascience.ch). I obtained NS11.INFOMANIAK.CH from the following page https://whois.domaintools.com/datascience.ch.
+- Concerning the last step on renewing tickets, my error message is a bit different: `kinit: KDC can't fulfill requested option while renewing credentials`. I tried to restart the kadmin and krb5kdc services, delete the principal files (`sudo rm /var/kerberos/krb5kdc/principals*`) and then recreate the database with `sudo kdb5_util create -s` but the error is still here. This should not be a problem for now as we don't use Hue.
+
+Files copied in this directory:
+- /etc/krb5.conf
+- /var/kerberos/krb5kdc/kdc.conf
+- /var/kerberos/krb5kdc/kadm5.acl

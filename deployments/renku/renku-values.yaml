@@ -1,0 +1,166 @@
+domain_configurations:
+  baseURL: https://renkuhadoop.dev.renku.ch
+  gatewayURL: https://renkuhadoop.dev.renku.ch/api
+  gitlabClientId: a469d52dffcf7ae31e6649a4caf907cd7fa1a205a0beea7577c03a22ba8c
+  gitlabClientSecret: 63872efab21f5ecfe63134488b880f5022584aa7701cface1657bc52cf49
+  gitlabPrefix: /
+  gitlabURL: https://renkulab.io/gitlab
+  hubGitlabClientId: a469d52dffc7afe31e6644caf03907cd7fa1a245a0beea7577c03a22ba8c
+  hubGitlabClientSecret: 63872efab291f5ecfe56314488b880b022584aa770cfa7ce1657bc52cf49
+  ingressTLS: renkuhadoop-dev-renku-ch-tls
+  jupyterhubAuthCallbackUrl: https://renkuhadoop.dev.renku.ch/jupyterhub/hub/oauth_callback
+  jupyterhubURL: https://renkuhadoop.dev.renku.ch/jupyterhub
+  mainURL: renkuhadoop.dev.renku.ch
+  oauth_redirect_uri: https://renkuhadoop.dev.renku.ch/api/auth/jupyterhub/token
+  registry_tls: registry-renkulab-io/gitlab-tls
+  registryName: registry.renkulab.io/gitlab
+  registryURL: https://registry.renkulab.io/gitlab
+gateway:
+  gitlabClientId: a469d52dffcf7ae31e66a4caf03907d7fa1a2405a0beea7577c03a22ba8c
+  gitlabClientSecret: 63872efab291f5ecfe56334488b80f5b02258aa7701cfa7ce1657bc52cf49
+  gitlabUrl: https://renkulab.io/gitlab
+  graph:
+    sparql:
+      password: d2c0960bca43b2b7ed5f0d98bbe88ca29308873c34ec180d216fa725cc
+      username: renku
+  jupyterhub:
+    clientId: gateway
+    clientSecret: 85d102b1d265f2e43bf608a088c249c24202dcd4cf5c8084b5a28e03e8bcb
+  secretKey: 5c2f199c185a6edfc90cc1c65b87660e772f7d9a479e52c1fb768341f45b
+gitlab:
+  demoUserIsAdmin: true
+  enabled: false
+  oauth:
+    autoSignIn: false
+  password: 32da5c2b509a17aa6e210ca05c6a17a4da6b4e6b73438113afbfb6d6d5d
+  registry:
+    backendHealthcheck: false
+    enabled: true
+    exposedAs: Ingress
+    externalUrl: https://registry.renkulab.io/gitlab
+    ingress:
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      hosts:
+      - registry.renkulab.io/gitlab
+      tls:
+      - hosts:
+        - registry.renkulab.io/gitlab
+        secretName: registry-renkulab-io/gitlab-tls
+  sharedRunnersRegistrationToken: 06d9ca5fad4dc4b8024e5c80c10f1a870bcf0373fd266db59048b76d6
+  ssh:
+    externalPort: 22
+    nodePortService:
+      enabled: true
+      nodePort: 32022
+global:
+  gateway:
+    clientSecret: cd8db45af4c15ef2c93ad3abaade1c1eb0d6e58dc152a5cfeddd914555dd
+    gitlabClientSecret: bfaab0e10a902a09b2102966503a9c9235b4e40fae927b834cec68c1680
+  gitlab:
+    clientSecret: eac6ed98e9e85ffed2215ad7295aa857b2e58c9ec2a9abffa45e1e3cde0
+    postgresPassword:
+      value: 9e196a3d3096db72126bc15f227cb1bd4ea4a6a3aeb0bebadcac6b3673
+    urlPrefix: /gitlab
+  graph:
+    dbEventLog:
+      postgresPassword:
+        value: 7aa9ec77720ffe6b925dbf11e8d7abe8a1856092104dde3f850efd79b
+    tokenRepository:
+      postgresPassword:
+        value: 43de86daa29266c3cbd539b2715311d888bfb122a10dc92de0e5b102a70
+  jupyterhub:
+    postgresPassword:
+      value: 6730c178d1a77e5f8b0ae5af09880cb1de5cac380a31fd091b489643b75
+  keycloak:
+    password:
+      value: f991a37fbfd0294263ce4be7e465a5cd10b50f7f384b160efb8eb8c209
+    postgresPassword:
+      value: dfde821a1ea78626523e3ae73cfecdcc44ae28f83041cd34d39b2af6dbe
+  renku:
+    domain: renkuhadoop.dev.renku.ch
+  useHTTPS: true
+graph:
+  gitlab:
+    url: https://renkulab.io/gitlab
+  jena:
+    users:
+      admin:
+        password: 0cfcd477af2e676f172c68ff573b69d8e1400510a1de9669faddb51a
+      renku:
+        password: d2c0960ca4a3b2bd5f08d98e88cacc2930887c343ec180d216fa725cc
+  tokenRepository:
+    tokenEncryption:
+      secret: YI0Y2E2NJlZTUyNDE4YQo=
+  webhookService:
+    hookToken:
+      secret: NY5MzE3NGMY2E3NmU0Mwo=
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+  enabled: true
+  hosts:
+  - renkuhadoop.dev.renku.ch
+  tls:
+  - hosts:
+    - renkuhadoop.dev.renku.ch
+    secretName: renkuhadoop-dev-renku-ch-tls
+keycloak:
+  keycloak:
+    persistence:
+      dbHost: renkuhadoop-postgresql
+notebooks:
+  gitlab:
+    registry:
+      host: registry.renkulab.io
+    url: https://renkulab.io/gitlab
+  jupyterhub:
+    auth:
+      gitlab:
+        callbackUrl: https://renkuhadoop.dev.renku.ch/jupyterhub/hub/oauth_callback
+        clientId: a469d52dffcf7afe3e6649a4cf3907cdfa1a2405a0beea7577c03a22ba8c
+        clientSecret: 63872efb2915ecfe6314488b880f5b02258aa771cfa7ce1657bc52cf49
+      state:
+        cryptoKey: 2b2db6a847fd39c44271a9034cc4267924fb071cbfdf23f53ffba2481fff
+        enabled: true
+    hub:
+      baseUrl: /jupyterhub/
+      cookieSecret: 7347002166f1bd6f81f597c06da475ada012d8719d50fb60ed9213027f8
+      db:
+        type: postgres
+        url: postgres+psycopg2://jupyterhub@renkuhadoop-postgresql:5432/jupyterhub
+      extraEnv:
+      - name: GITLAB_URL
+        value: https://renkulab.io/gitlab
+      - name: DEBUG
+        value: "1"
+      - name: JUPYTERHUB_SPAWNER_CLASS
+        value: spawners.RenkuKubeSpawner
+      - name: PGPASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: jupyterhub-postgres-password
+            name: renku-jupyterhub-postgres
+      services:
+        gateway:
+          apiToken: 85d1021d2ff2e43bf60a088c2493c24202dcd4cf5c8084b5a28e03e8bcb
+          oauth_client_id: gateway
+          oauth_redirect_uri: https://renkuhadoop.dev.renku.ch/api/auth/jupyterhub/token
+        notebooks:
+          url: http://renkuhadoop-notebooks
+          apiToken: ebacf3be06a4cd67966cfca126649010c88e3a81706671ae36b3c6aea30
+    proxy:
+      secretToken: 34d3d7a2f9baf86e0ed521c7aeda24cbd61e67eb696729f46fa4fbcb2e
+    rbac:
+      enabled: true
+postgresql:
+  postgresqlPassword: 74f7ebea49987229599bdbc0609ca4dba9b53c1184ef46231f9276ef
+ui:
+  baseUrl: https://renkuhadoop.dev.renku.ch
+  gatewayUrl: https://renkuhadoop.dev.renku.ch/api
+  gitlabUrl: https://renkulab.io/gitlab
+  jupyterhubUrl: https://renkuhadoop.dev.renku.ch/jupyterhub

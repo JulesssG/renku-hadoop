@@ -1,0 +1,15 @@
+[all]
+hadoop-4 ansible_ssh_host=86.119.39.171 internal_ip=10.0.5.94
+hadoop-3 ansible_ssh_host=86.119.42.214 internal_ip=10.0.5.106
+hadoop-2 ansible_ssh_host=86.119.42.190 internal_ip=10.0.2.221
+hadoop-1 ansible_ssh_host=86.119.43.181 internal_ip=10.0.2.70
+
+[clients]
+hadoop-4 ansible_ssh_host=86.119.39.171 internal_ip=10.0.5.94
+hadoop-3 ansible_ssh_host=86.119.42.214 internal_ip=10.0.5.106
+hadoop-2 ansible_ssh_host=86.119.42.190 internal_ip=10.0.2.221
+hadoop-1 ansible_ssh_host=86.119.43.181 internal_ip=10.0.2.70
+
+[HeadMasterNode]
+hadoop-1 ansible_ssh_host=86.119.43.181 internal_ip=10.0.2.70
+

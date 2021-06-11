@@ -1,0 +1,8 @@
+
+- name: Patch clients SwitchEngine
+  hosts: all
+  user: centos
+  become: yes
+  become_method: sudo
+  roles:
+    - role: patch
