@@ -5,8 +5,6 @@ In this project, we explore how to deploy and configure Data Science projects wi
 # Quick overview of the repository
 
 - [deployments](./deployments): the documentation relative to the Renku and Hadoop deployments
-- [hadoop-project-without-template](./hadoop-project-without-template): a Hadoop project in Renku that doesn't use our template (current state of Renku)
-- [hadoop-project-with-template](./hadoop-project-with-template): a Hadoop project in Renku created with our template
 - [hadoop-template](./hadoop-template): our Renku template for Hadoop
 - [authentication](./authentication): documentation relative to the setup of authentication on the Hadoop cluster
 
