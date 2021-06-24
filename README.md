@@ -42,6 +42,8 @@ choose a project and launch an interactive environment with a
 command-line interface and the ability to launch jupyter notebooks to
 code directly in the browser.
 
+![General structure of Renku using an external computing cluster](./general-structure-renku.png)
+
 # Hadoop in Renku - Current Situation
 
 There are templates available in Renku to set up a new project rapidly.
