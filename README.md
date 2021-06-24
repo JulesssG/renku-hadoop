@@ -41,6 +41,7 @@ command-line interface and the ability to launch jupyter notebooks to
 code directly in the browser.
 
 ![General structure of Renku using an external computing cluster](./general-structure-renku.png)
+*General structure of Renku using an external computing cluster*
 
 # Hadoop in Renku - Current Situation
 
