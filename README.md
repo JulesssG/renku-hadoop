@@ -4,11 +4,15 @@ In this project, we explore how to deploy and configure Data Science projects wi
 
 # Quick overview of the repository
 
-- ![deployments](./deployments): the documentation relative to the Renku and Hadoop deployments
-- ![hadoop-project-without-template](./hadoop-project-without-template): a Hadoop project in Renku that doesn't use our template (current state of Renku)
-- ![hadoop-project-with-template](./hadoop-project-with-template): a Hadoop project in Renku created with our template
-- ![hadoop-template](./hadoop-template): our Renku template for Hadoop
-- ![authentication](./authentication): documentation relative to the setup of authentication on the Hadoop cluster
+- [deployments](./deployments): the documentation relative to the Renku and Hadoop deployments
+- [hadoop-project-without-template](./hadoop-project-without-template): a Hadoop project in Renku that doesn't use our template (current state of Renku)
+- [hadoop-project-with-template](./hadoop-project-with-template): a Hadoop project in Renku created with our template
+- [hadoop-template](./hadoop-template): our Renku template for Hadoop
+- [authentication](./authentication): documentation relative to the setup of authentication on the Hadoop cluster
+
+Along with this project you can find:
+- A repository containing an example Hadoop project in Renku that doesn't use our template (current state of Renku): [https://github.com/jjjules/hadoop-project-without-template](https://github.com/jjjules/hadoop-project-without-template)
+- A repository containing an example Hadoop project in Renku using our template: [https://github.com/jjjules/hadoop-project-with-template](https://github.com/jjjules/hadoop-project-with-template)
 
 # Motivations
 
