@@ -1,67 +1,43 @@
 # Hadoop template
-## Usage example (TODO: change this into a user guide)
-We show here the resulting setup for creating a Renku project using Hadoop using our design on our deployments. We describe the resulting template and how it works. The repository we used for this example can be found ![here](https://github.com/jjjules/renku-hadoop/tree/master/hadoop-project-with-template)) (TODO: link).
+## User guide
+When using the template, the configuration of the cluster is given through the renku-env's of the user. The renku-env is a repository used by Renku to store user's configuration. It is renku-env**'s** here because we also get the configuration in the renku-env of the Gitlab groups the user belongs to. This allows to automatically detect the back-end of a user from his or her groups. The belonging to a group of a class could grant the user access to the back-end of that class for example.
 
-In the project, the only difference between the Hadoop template and a
-standard python template is the Docker image used as the entrypoint
-script is already present at the root of it. The Docker image handles
-all dependencies and static configuration of the machine needed to work
-with Hadoop and the entrypoint script handles the dynamic configuration
-of the back-end and the linking between the Renku environment and the
-back-end. Hence, starting from a standard python Renku project we just
-need to change the Docker image for our image for Hadoop. As a side
-note, for the purpose of development, to work on the entrypoint script
-one can add it at the root of the project and add the following lines
-just before the *do not edit* section at of the Dockerfile:
+The only mandatory component to use the template is to have a back-end set up in one of the renku-env, this is done by providing a file named `backend-conf.json` containing the entry point address for all services on the cluster. Here is an example for this file:
 
 ```JSON
-# Use custom entrypoint.sh if it exists
-USER root
-COPY entrypoint.sh /tmp/entrypoint.sh
-RUN if [ -f /tmp/entrypoint.sh ]; then mv /entrypoint.sh
-/entrypoint.sh.backup; mv /tmp/entrypoint.sh /; fi
-USER ${NB_USER}
+{
+	"HADOOP_DEFAULT_FS_ARG": "hdfs://hadoop-1.datascience.ch:8020",
+	"HIVE_JDBC_ARG":
+		"jdbc:hive2://hadoop-3.datasci
+		ence.ch:2181,hadoop-1.datascience.ch:2181,hadoop-2.datascience.ch:21
+		81/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2",
+	"HIVE_SERVER_ARG": "hadoop-2.datascience.ch",
+	"HBASE_SERVER_ARG": "hadoop-1.datascience.ch",
+	"YARN_NM_HOSTNAME_ARG": "hadoop-2.datascience.ch",
+	"YARN_RM_HOSTNAME_ARG": "hadoop-1.datascience.ch",
+	"LIVY_SERVER_ARG": "http://hadoop-1.datascience.ch:8999/"
+}
 ```
+*Example of the `backend-conf.json` file*
 
-**Code 1 -** Modifying the used entrypoint.sh.
+Note: The value of `HIVE_JDBC_ARG` will depend of your personal configuration, 
+whether or not you are using ZooKeeper for to discover your services for example.
 
-No other modification is needed for the project, but we need a back-end
-registered in Gitlab. We will define the back-end in our personal
-user-env here, but keep in mind that if this back-end were configured in
-a (public) group we belonged to, it would work just the same. For the
-first possibility of configuration, we put the backend-conf.json
-directly at the root of the renku-env. The content of this file is shown
-in **Code 2**. Now that a back-end is present in Gitlab, we can launch
-an interactive environment and start to code using the services
-available on the cluster. For the sake of example, we show a trivial
-code snippet runned in this example project in **Code 6**.
+For reasons described in the *Issues and possible improvements* section, for now all 
+Gitlab resources (renku-env's and groups) must be public. To be able to still use the 
+template without exposing the cluster, we added a special environment variable named 
+`CUSTOM_RENKU_ENV_URL` which can be used to give access to a private renku-env. Using 
+a token created in Gitlab with access to private repositories, provide the url of the 
+private renku-env with this token under this environment variable (in the Dockerfile) 
+to give the template access to it. A Gitlab's url with an access token looks like this: 
+`https://<name-of-application>:<access-token>@<gitlab-instance>/<gitlab-user>/renku-env.git`.
 
-To find the values for the fields in the backend-conf.json file, the
-simplest solution is to go to the Ambari dashboard and get the
-information from there. The mapping between names in the file and in the
-Ambari dashboard is:
-
--   `HADOOP_DEFAULT_FS_ARG`: fs.defaultFS value in HDFS advanced configuration
-
--   `HIVE_JDBC_ARG`: get the value hive.llap.zk.sm.connectionString in the advanced configuration of Hive, then the value for `HIVE_JDBC_ARG` is obtained by substituting this value into jdbc:hive2://\<hive.llap.zk.sm.connectionString\>;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2
-
--   `HIVE_SERVER_ARG`: _Hive Metastore host_ in the advanced configuration
-
--   `HBASE_SERVER_ARG`: _Hbase Master host_ in its advanced configuration
-
--   `YARN_NM_HOSTNAME_ARG`: _NodeManager host_ in YARN's advanced configuration
-
--   `YARN_RM_HOSTNAME_ARG`: _ResourceManager host_ in YARN's advanced configuration
-
--   `LIVY_SERVER_ARG`: In Spark configuration summary, under _Livy Server_
-
-Now, if we want to add custom configuration to services on the cluster,
-we can do it by providing a configuration repository in the
-hadoop-conf.json under the key `BACKEND_MODULES_CONF_REPO` in the
-renku-env. We also show this mode of configuration for the choice of the
-backend, by providing the backend-conf.json in an external repository,
-under the key `BACKEND_CONF_REPO`. The structure of the resulting
-hadoop-conf.json is shown in **Code 7**.
+Providing the `backend-conf.json` file can be done in two ways. It can be dumped at the 
+root of the renku-env or it can be present at the root of another Git repository. For the 
+latter, the url of the external repository should be given in the main configuration file 
+for Hadoop in the renku-env under the key `BACKEND_CONF_REPO`. This main configuration
+file should be present at the root of the renku-env and named `hadoop-conf.json`. 
+Its structure is as depicted below.
 
 ```JSON
 {
@@ -71,27 +47,58 @@ hadoop-conf.json is shown in **Code 7**.
 		"https://<git-repository-containing-modules-configuration>"
 }
 ```
+*Structure of the `hadoop-conf.json` file*
 
-**Code 7 -** New Hadoop configuration in renku-env (hadoop-conf.json).
+It is possible to further configure the modules on the cluster by providing 
+configuration file for them or environment variables that be loaded on 
+the Renku environment. This is done through a repository given under the 
+`BACKEND_MODULES_CONF_REPO` key in the main configuration file. This 
+repository can contain configuration file along with a `backend-modules-conf.json`
+file that will contain the environment variables 
+and the paths of the configuration file if needed. Configuration file should 
+be at the root of the repository and their path can be omitted if their 
+location is already known, that is the following files:
 
-As for the example in the design, let\'s just modify the Hadoop username
-and the sparkmagic configuration. The modules\' configuration repository
-hence contains the files shown in **Code 3** and **Code 4**.
+- `sparkmagic.conf`
+- `beeline.conf`
+- `hadoop-core-site.xml`
+- `hadoop-yarn-site.xml`
+- `hive-beeline-site.xml`
 
-A summary of the methods of configuration is shown in the figure below. One
-last note about the results obtained. Our design fully worked on another
-deployment but some services (Spark and HBase) failed to work on our own
-deployment. The issue seems to be related to the deployment rather than
-the design as it worked on the other Renku instance. But for example,
-HBase is working when using the shell directly on the cluster on our own
-deployment but even with the correct entry point address the Renku
-environment fails to connect to it. We either have a connectivity
-problem (e.g. misconfiguration in the firewall) or the HBase server is
-listening to another port or not listening at all. So there may be
-additional configuration needed on the cluster to be able to link the
-Renku instance with them as our design does.
+Otherwise the paths should be given under the `CONF_FILES` key in the json and 
+environment variables can be given through the `ENV_VARIABLES` key, as shown in 
+the structure of this json file shown below.
+
+```JSON
+{                                                      
+	"CONF_FILES": {                                      
+		"<FILE-WITH-UNKNOWN-LOCATION>": "<FILE-PATH-IN-RENKU-ENVIRONMENT>",
+		...
+	},                                                     
+	"ENV_VARIABLES": {                                   
+		"<ENVIRONMENT-VARIABLE-NAME>": "<ENVIRONMENT-VARIABLE-VALUES",
+		...
+	}                                                      
+}                                                      
+```
+*Structure of the `backend-modules-conf.json` file in the repository for the configuration of the modules*
+
+A summary of the methods of configuration is shown in the figure below.
 
 ![](./diagrams/methods-of-configuration.png)
+
+To find the values for the fields in the `backend-conf.json` file, the
+simplest solution is to go to the Ambari dashboard and get the
+information from there. The mapping between names in the file and in the
+Ambari dashboard is:
+
+-   `HADOOP_DEFAULT_FS_ARG`: fs.defaultFS value in HDFS advanced configuration
+-   `HIVE_JDBC_ARG`: get the value hive.llap.zk.sm.connectionString in the advanced configuration of Hive, then the value for `HIVE_JDBC_ARG` is obtained by substituting this value into jdbc:hive2://\<hive.llap.zk.sm.connectionString\>;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2
+-   `HIVE_SERVER_ARG`: _Hive Metastore host_ in the advanced configuration
+-   `HBASE_SERVER_ARG`: _Hbase Master host_ in its advanced configuration
+-   `YARN_NM_HOSTNAME_ARG`: _NodeManager host_ in YARN's advanced configuration
+-   `YARN_RM_HOSTNAME_ARG`: _ResourceManager host_ in YARN's advanced configuration
+-   `LIVY_SERVER_ARG`: In Spark configuration summary, under _Livy Server_
 
 ## Description of the design
 Our design should simplify the creation of Hadoop projects as much as
@@ -126,55 +133,29 @@ the dynamic configurations. Originally, it just sets up Git for the
 current user, imports the user's renku-env and clones the current
 project. For our use case, we use this script to produce the Hadoop
 configuration after pulling the renku-env. Our Docker image for Hadoop
-can be found ![here](https://hub.docker.com/r/renkubigdata/renkulab-py-bigdata).
+can be found ![here](https://hub.docker.com/r/renkuhadoop/renkulab-py-hadoop).
 
 Concretely, the choice of the back-end is a list of key/value pairs that
 will be loaded as environment variables and used by the configuration
 files and the services. In our design this is a plain JSON file named
-backend-conf.json. This file can either be put directly in the renku-env
+`backend-conf.json.` This file can either be put directly in the renku-env
 or in an external repository. In that case, the repository should be
 given in that main Hadoop configuration file of the renku-env, named
-hadoop-conf.json. The configuration of the back-end modules cannot be
+`hadoop-conf.json.` The configuration of the back-end modules cannot be
 contained in a file. Rather it is a collection of configuration files
 and environment variables. So this has to be in a separated repository.
 As for the choice of the backend, the repository should be indicated in
-the Hadoop configuration file of the renku-env. We describe the
-structure of this repository for the configuration of the modules. In
-**Code 1** and **Code 2** we show the structure of the hadoop-conf.json
-file and our own backend-conf.json file.
-
-```JSON
-{                                                
-	"BACKEND_CONF": "<URL-TO-BACKEND-CONF-FILE>",
-	"BACKEND_MODULES_CONF_REPO":	"<URL-TO-BACKEND-CONF-REPO-FOR-HADOOP-MODULES>"
-}                                                
-```
-
-**Code 1 -** Structure of Hadoop main configuration file in renku-env.
-
-```JSON
-{
-	"HADOOP_DEFAULT_FS_ARG": "hdfs://hadoop-1.datascience.ch:8020",
-		"HIVE_JDBC_ARG":
-			"jdbc:hive2://hadoop-3.datasci
-			ence.ch:2181,hadoop-1.datascience.ch:2181,hadoop-2.datascience.ch:21
-			81/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2",
-		"HIVE_SERVER_ARG": "hadoop-2.datascience.ch",
-		"HBASE_SERVER_ARG": "hadoop-1.datascience.ch",
-		"YARN_NM_HOSTNAME_ARG": "hadoop-2.datascience.ch",
-		"YARN_RM_HOSTNAME_ARG": "hadoop-1.datascience.ch",
-		"LIVY_SERVER_ARG": "http://hadoop-1.datascience.ch:8999/"
-}
-```
-
-Note: The value of `HIVE_JDBC_ARG` will depend of your personal configuration, whether or not you are using ZooKeeper for to discover your services for example.
+the Hadoop configuration file of the renku-env. We'll describe the
+structure of this repository for the configuration of the modules in just 
+a bit. We show the structure of the `hadoop-conf.json` file and our 
+own `backend-conf.json` file in the user guide.
 
 In our Hadoop deployment we have four nodes, hadoop-1 to hadoop-4 and as
 we can see in the backend-conf.json file only the first three appear.
 Meaning only the first three nodes contain entry points for services.
 
 In the repository for the configuration of the modules, there is a main
-file called backend-modules-conf.json containing the paths where the
+file called `backend-modules-conf.json` containing the paths where the
 configuration file should be put in the Renku environment and
 environment variables the user wants to add or change. Adding an entry
 for a configuration file is optional for the following files as their
@@ -186,28 +167,19 @@ following variables (along with all new environment variables defined in
 `backend-modules-conf.json`) will be replaced in the configuration files:
 
 -   `HDP_HOME`, `HADOOP_HOME` and `HIVE_HOME`
-
 -   `HADOOP_CONF_DIR`, `HADOOP_DEFAULT_FS` and `HADOOP_USER_NAME`
-
 -   `HIVE_JDBC_URL`, `HIVE_SERVER_2`
-
 -   `HBASE_SERVER`
-
 -   `YARN_NM_HOSTNAME`, `YARN_NM_ADDRESS`, `YARN_RM_HOSTNAME`, `YARN_RM_ADDRESS`, `YARN_RM_SCHEDULER` and `YARN_RM_TRACKER`
-
 -   `LIVY_SERVER_URL`
-
 -   `JAVA_HOME`
-
 -   `JUPYTERLAB_DIR`, `JUPYTERLAB_SETTINGS_DIR` and `JUPYTERLAB_WORKSPACES_DIR`
 
 For example, assume a user that wants to change his or her Hadoop
 username to other-hadoop-name and change the configuration of sparkmagic
 to gain access to more computing power. The repository for the modules'
-configuration would have two files in it, backend-modules-conf.json and
-sparkmagic.conf, that could look as depicted in **Code 3** and **Code
-4**. In **Code 4**, `LIVY_SERVER_URL` is an environment variable that will
-be replaced by its value at startup
+configuration would have two files in it: `backend-modules-conf.json` and
+`sparkmagic.conf` that could look as depicted in the code blocks shown below.
 
 ```JSON
 {                                                      
@@ -220,8 +192,7 @@ be replaced by its value at startup
 }                                                      
 ```
 
-**Code 3 -** Example of the main configuration for modules in the
-back-end.
+*Example of the main configuration for modules in the back-end*
 
 ```JSON
 {
@@ -250,8 +221,10 @@ back-end.
 		"heartbeat_retry_seconds": 1
 }
 ```
+*Example configuration for spark magic*
 
-**Code 4 -** Example configuration for spark magic.
+Note: Here in the spark magic configuration, `LIVY_SERVER_URL` is an 
+environment variable that will be replaced by its value at startup
 
 Now there are several flaws to this approach. If the only possibility
 for configuring Hadoop is through the user's renku-env, the automatic
@@ -285,7 +258,7 @@ share a cluster or their cluster configuration. Using it, Renku could
 for example give access to clusters as a service easily. All that is
 needed would be to put the user in the appropriate Gitlab group.
 
-## Issues and possible improvements:
+## Issues and possible improvements
 
 The interactive environment of Renku is not trusted, so the credentials
 for Gitlab are not present inside. Otherwise, a malicious user could
@@ -301,7 +274,7 @@ environment has been launched.
 
 ![](./diagrams/Renku-Gitlab-communication.png)
 
-**Figure 2 -** Diagram of Renku's communication.
+*Diagram of Renku's communication*
 
 This is problematic for us because we need access to the user's groups
 and back-end repositories, whether they are public or private.
@@ -351,4 +324,30 @@ mislead the user into thinking that this function is part of the
 codebase of Hive or another package. And more importantly, the code
 would not be portable. It wouldn't work anywhere outside of Renku, which
 from a reproducibility perspective is not acceptable.
+
+To change the scripts used at startup for the dynamic configuration, 
+one can change indicate that in the Dockerfile. For example to change 
+the used `entrypoint.sh`, add it at the root of the project and add the following lines 
+just before the *do not edit* section at of the Dockerfile:
+
+```JSON
+# Use custom entrypoint.sh if it exists
+USER root
+COPY entrypoint.sh /tmp/entrypoint.sh
+RUN if [ -f /tmp/entrypoint.sh ]; then mv /entrypoint.sh
+/entrypoint.sh.backup; mv /tmp/entrypoint.sh /; fi
+USER ${NB_USER}
+```
+
+One last note, our design fully worked on another
+deployment but some services (Spark and HBase) failed to work on our own
+deployment. The issue seems to be related to the deployment rather than
+the design as it worked on the other Renku instance. But for example,
+HBase is working when using the shell directly on the cluster on our own
+deployment but even with the correct entry point address the Renku
+environment fails to connect to it. We either have a connectivity
+problem (e.g. misconfiguration in the firewall) or the HBase server is
+listening to another port or not listening at all. So there may be
+additional configuration needed on the cluster to be able to link the
+Renku instance with them as our design does.
 

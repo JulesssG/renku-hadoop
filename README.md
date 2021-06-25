@@ -1,12 +1,23 @@
 # System Integration of the Hadoop framework in Renku
 
-In this project, we explore how to deploy and configure Data Science projects with Hadoop in ![Renku](https://datascience.ch/renku/). We incorporate the configuration between the two components in our design of template for Renku. This template permits to reduce as much as possible the configuration needed to use a Hadoop cluster. Just from the file that defines the backend (5 to 10 addresses) it can automatize the rest of the procedure while keeping the possibility of configuring further the cluster's components. We also began working on an important configuration element of a Hadoop cluster, namely to provide authentication of the users on the cluster and the services available on it.
+In this project, we explore how to deploy and configure Data Science projects 
+with Hadoop in ![Renku](https://datascience.ch/renku/). We incorporate the 
+configuration between the two components in our design of template for Renku. 
+This template permits to reduce as much as possible the configuration needed 
+to use a Hadoop cluster. Just from the file that defines the backend (5 to 10 
+addresses) it can automatize the rest of the procedure while keeping the 
+possibility of configuring further the cluster's components. We also began 
+working on an important configuration element of a Hadoop cluster, namely to 
+provide authentication of the users on the cluster and the services available 
+on it.
 
 # Quick overview of the repository
 
-- [deployments](./deployments): the documentation relative to the Renku and Hadoop deployments
+- [deployments](./deployments): the documentation relative to the Renku and 
+Hadoop deployments
 - [hadoop-template](./hadoop-template): our Renku template for Hadoop
-- [authentication](./authentication): documentation relative to the setup of authentication on the Hadoop cluster
+- [authentication](./authentication): documentation relative to the setup of 
+authentication on the Hadoop cluster
 
 Along with this project you can find:
 - A repository containing an example Hadoop project in Renku that doesn't use our template (current state of Renku): [https://github.com/jjjules/hadoop-project-without-template](https://github.com/jjjules/hadoop-project-without-template)
@@ -14,15 +25,38 @@ Along with this project you can find:
 
 # Motivations
 
-The technology provided by ![Apache](https://www.apache.org/) with its Hadoop framework is the foundation of many leading services when it comes to Big Data processing. With this project, we work on improving the accessibility of this framework by providing documentation for all key components and a proposal of design for integrating an automatic and dynamic configuration of Hadoop in Renku, an open-source platform for reproducible and collaborative Data Science. Developed by the Swiss Data Science Center (![SDSC](https://datascience.ch/)), it enables versioning of the code, the data and the environment which together provides full reproducibility of Data Science projects. In the long term by offering a service similar to what we’re designing, Renku would be one of the  rare providers of an easy-to-use Hadoop environment and it would greatly improve the accessibility to it. The Renku plateform is also very useful in academic context. Our work of Hadoop integration in Renku can help the teaching of this framework by providing an easy to use and easy to manage Hadoop template in Renku.
+The technology provided by ![Apache](https://www.apache.org/) with its Hadoop 
+framework is the foundation of many leading services when it comes to Big Data 
+processing. With this project, we work on improving the accessibility of this 
+framework by providing documentation for all key components and a proposal of 
+design for integrating an automatic and dynamic configuration of Hadoop in Renku, 
+an open-source platform for reproducible and collaborative Data Science. Developed 
+by the Swiss Data Science Center (![SDSC](https://datascience.ch/)), it enables 
+versioning of the code, the data and the environment which together provides full 
+reproducibility of Data Science projects. In the long term by offering a service 
+similar to what we’re designing, Renku would be one of the  rare providers of an 
+easy-to-use Hadoop environment and it would greatly improve the accessibility to 
+it. The Renku plateform is also very useful in academic context. Our work of Hadoop 
+integration in Renku can help the teaching of this framework by providing an easy to 
+use and easy to manage Hadoop template in Renku.
 
 # Background
 
 ## Overview of Hadoop
 
-Apache Hadoop is a framework for distributed processing. It is composed of the Hadoop File System (HDFS), YARN and a MapReduce component. HDFS is the distributed file system made for Hadoop. YARN is the job scheduler and cluster resource management, it orchestrates the computation across the nodes and manages the resources needed for the computation. MapReduce is the programming model used by Hadoop, it has been designed for parallel and distributed processing on clusters.
+Apache Hadoop is a framework for distributed processing. It is composed of the Hadoop 
+File System (HDFS), YARN and a MapReduce component. HDFS is the distributed file system 
+made for Hadoop. YARN is the job scheduler and cluster resource management, it orchestrates 
+the computation across the nodes and manages the resources needed for the computation. 
+MapReduce is the programming model used by Hadoop, it has been designed for parallel and 
+distributed processing on clusters.
 
-Hadoop serves as the basis for a lot of services for Big Data based on distributed architecture: Spark, Hive, HBase, Kafka, etc. If you are unfamiliar with Hadoop and want to know more, Craig Stedman has made ![a great and accessible description of it](https://searchdatamanagement.techtarget.com/definition/Hadoop).  It is a very important tool, it is considered as the principal technology for Big Data processing for more than 10 years (![source](https://www.lebigdata.fr/hadoop)), especially in combination with Spark which is widely used.
+Hadoop serves as the basis for a lot of services for Big Data based on distributed architecture: 
+Spark, Hive, HBase, Kafka, etc. If you are unfamiliar with Hadoop and want to know more, 
+Craig Stedman has made ![a great and accessible description of it](https://searchdatamanagement.techtarget.com/definition/Hadoop).  
+It is a very important tool, it is considered as the principal technology for Big Data processing 
+for more than 10 years (![source](https://www.lebigdata.fr/hadoop)), especially in combination $
+with Spark which is widely used.
 
 ## Overview of Renku
 
@@ -81,14 +115,20 @@ repository](./hadoop-project-without-template).
 
 # Hadoop in Renku - Using our template
 
-We show here our template in action. It comes in the form of a Docker image [available here](https://hub.docker.com/repository/docker/renkuhadoop/renkulab-py-hadoop). The only two components required for a working Hadoop project are to use the template and to have the cluster set up in Gitlab as shown below (check the [user guide](./hadoop-template) of the template for more information):
+We show here our template in action. It comes in the form of a Docker image 
+[available here](https://hub.docker.com/repository/docker/renkuhadoop/renkulab-py-hadoop). 
+The only two components required for a working Hadoop project are to use the 
+template and to have the cluster set up in Gitlab as shown below (check the 
+[user guide](./hadoop-template) of the template for more information):
 
 ![](./demo-screenshots/demo-backend-conf.png)
 
 The Dockerfile of the project simply use our Docker image:
 ![](./demo-screenshots/demo-dockerfile.png)
 
-Note: at line 6 of the Dockerfile we just give a custom URL for the renku-env so that we can store the backend in a private repository, again check the user guide for more information.
+Note: at line 6 of the Dockerfile we just give a custom URL for the renku-env 
+so that we can store the backend in a private repository, again check the user
+guide for more information.
 
 
 Then we can create an environment and start coding:
