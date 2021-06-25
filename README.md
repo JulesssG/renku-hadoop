@@ -98,3 +98,90 @@ Then we can create an environment and start coding:
 ![](./demo-screenshots/demo2.png)
 
 ![](./demo-screenshots/demo3.png)
+
+<!---
+References:
+https://github.com/jupyter-incubator/sparkmagic/issues/527#issuecomment-492015968
+https://blog.chezo.uno/livy-jupyter-notebook-sparkmagic-powerful-easy-notebook-for-data-scientist-a8b72345ea2d
+https://docs.cloudera.com/HDPDocuments/HDP2/HDP-2.6.5/bk_command-line-installation/content/installing_ranger_plugins.html
+https://docs.cloudera.com/HDPDocuments/HDP2/HDP-2.6.5/bk_security/content/ranger_console_navigation.html
+
+Documentation for the project (our documentation for deployments, design
+of Hadoop setup in Renku, etc.):
+[[https://github.com/jjjules/renku-hadoop]{.ul}](https://github.com/JulesssG/renku-hadoop)
+
+Apache website:
+[[https://www.apache.org/]{.ul}](https://www.apache.org/)
+
+Hadoop description:
+[[https://www.lebigdata.fr/hadoop]{.ul}](https://www.lebigdata.fr/hadoop),
+[[https://searchdatamanagement.techtarget.com/definition/Hadoop]{.ul}](https://searchdatamanagement.techtarget.com/definition/Hadoop)
+
+What is Spark?:
+[[https://www.infoworld.com/article/3236869/what-is-apache-spark-the-big-data-platform-that-crushed-hadoop.html]{.ul}](https://www.infoworld.com/article/3236869/what-is-apache-spark-the-big-data-platform-that-crushed-hadoop.html)
+
+Kubernetes overview:
+[[https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/]{.ul}](https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/)
+
+Helm: [[https://helm.sh/]{.ul}](https://helm.sh/)
+
+Swiss Data Science Center:
+[[https://datascience.ch/]{.ul}](https://datascience.ch/renku/)
+
+Renku:
+[[https://datascience.ch/renku/]{.ul}](https://datascience.ch/renku/)
+
+Renku source code:
+[[https://github.com/SwissDataScienceCenter/renku]{.ul}](https://github.com/SwissDataScienceCenter/renku)
+
+Renku documentation:
+[[https://renku.readthedocs.io/en/latest/introduction/why.html]{.ul}](https://renku.readthedocs.io/en/latest/introduction/why.html)
+
+Caveats of using an external Gitlab with Renku:
+[[https://renku.readthedocs.io/en/latest/developer/example-configurations/gitlab.html?\#caveats]{.ul}](https://renku.readthedocs.io/en/latest/developer/example-configurations/gitlab.html?#caveats)
+
+Public Renku deployment:
+[[https://renkulab.io]{.ul}](https://renkulab.io)
+
+Public Renku deployment's Gitlab:
+[[https://renkulab.io/gitlab]{.ul}](https://renkulab.io)
+
+Official documentation for Renku's deployment:
+[[https://renku.readthedocs.io/en/latest/admin/index.html]{.ul}](https://renku.readthedocs.io/en/latest/admin/index.html)
+
+Hadoop Docker image:
+[[https://hub.docker.com/r/renkubigdata/renkulab-py-bigdata]{.ul}](https://hub.docker.com/r/renkubigdata/renkulab-py-bigdata)
+
+Thread discussing free access to Ambari:
+[[https://community.cloudera.com/t5/Support-Questions/How-do-I-download-the-latest-version-of-Ambari-and-HDP/m-p/299115/highlight/true\#M219531]{.ul}](https://community.cloudera.com/t5/Support-Questions/How-do-I-download-the-latest-version-of-Ambari-and-HDP/m-p/299115/highlight/true#M219531)
+
+Ambari:
+[[https://www.cloudera.com/products/open-source/apache-hadoop/apache-ambari.html]{.ul}](https://www.cloudera.com/products/open-source/apache-hadoop/apache-ambari.html)
+
+Steven Matison's information (author of MOSGA):
+[[https://ds-steven-matison.github.io/]{.ul}](https://ds-steven-matison.github.io/)
+
+MOSGA repositories:
+[[http://makeopensourcegreatagain.com/]{.ul}](http://makeopensourcegreatagain.com/)
+
+Cloudera's documentation for Hadoop deployment:
+[[https://docs.cloudera.com/HDPDocuments/Ambari-2.7.4.0/bk_ambari-installation/content/ch_Getting_Ready.html]{.ul}](https://docs.cloudera.com/HDPDocuments/Ambari-2.7.4.0/bk_ambari-installation/content/ch_Getting_Ready.html)
+
+Documentation for IPython's startup script:
+[[https://ipython.readthedocs.io/en/stable/interactive/tutorial.html?\#startup-files]{.ul}](https://ipython.readthedocs.io/en/stable/interactive/tutorial.html?#startup-files)
+
+Apache Knox documentation:
+[[https://www.cloudera.com/products/open-source/apache-hadoop/apache-knox.html]{.ul}](https://www.cloudera.com/products/open-source/apache-hadoop/apache-knox.html)
+
+Apache Ranger:
+[[https://www.cloudera.com/products/open-source/apache-hadoop/apache-ranger.html]{.ul}](https://www.cloudera.com/products/open-source/apache-hadoop/apache-ranger.html)
+
+Difference between Apache Knox and Ranger:
+[[https://community.cloudera.com/t5/Support-Questions/whats-the-difference-between-Ranger-and-Knox/td-p/159565]{.ul}](https://community.cloudera.com/t5/Support-Questions/whats-the-difference-between-Ranger-and-Knox/td-p/159565)
+
+Setting up a KDC for Kerberos:
+[[https://godatadriven.com/blog/kerberos-basics-and-installing-a-kdc/]{.ul}](https://godatadriven.com/blog/kerberos-basics-and-installing-a-kdc/)
+
+How does Kerberos works?:
+[[https://stealthbits.com/blog/what-is-kerberos/]{.ul}](https://stealthbits.com/blog/what-is-kerberos/)
+-->
